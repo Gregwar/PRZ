@@ -4,6 +4,12 @@ from osc import OSC
 from subprocess import call
 import threading
 import time
+
+# Mots
+words = [
+    ["push1", "hello"],
+    ["push2", "bonjour"]
+]
  
 #------OSC Server-------------------------------------#
 receive_address = '0.0.0.0', 8000
@@ -16,10 +22,12 @@ s.addDefaultHandlers()
  
 # define a message-handler function for the server to call.
 def printing_handler(addr, tags, stuff, source):
-    print(addr)
-    print(tags);
-    print(stuff)
-    call(["osascript", "-e", "tell application \"System Events\" to keystroke \"x\""])
+    for couple in words:
+        push, word = couple
+        if addr.endswith(push) and stuff[0]==1.0:
+            print(addr)
+            call(["osascript", "-e", "tell application \"System Events\" to keystroke \""+word+"\""])
+
  
 s.addMsgHandler('default', printing_handler)
  
