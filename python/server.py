@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 from osc import OSC
+from subprocess import call
 import threading
 import time
  
@@ -18,6 +19,7 @@ def printing_handler(addr, tags, stuff, source):
     print(addr)
     print(tags);
     print(stuff)
+    call(["osascript", "-e", "tell application \"System Events\" to keystroke \"x\""])
  
 s.addMsgHandler('default', printing_handler)
  
