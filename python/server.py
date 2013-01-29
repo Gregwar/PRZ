@@ -5,7 +5,7 @@ import threading
 import time
  
 #------OSC Server-------------------------------------#
-receive_address = '192.168.0.22', 8000
+receive_address = '0.0.0.0', 8000
  
 # OSC Server. there are three different types of server. 
 s = OSC.ThreadingOSCServer(receive_address)
