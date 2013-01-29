@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import OSC
+from osc import OSC
 import threading
 import time
  
