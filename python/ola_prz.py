@@ -3,25 +3,30 @@ import serial, getopt, textwrap, sys, threading, time
 from ola.ClientWrapper import ClientWrapper
 
 def SerialThread(device):
-    port = serial.Serial(device, 1000000)
-
     while globals()['running']:
-        if 'buffer' in globals():
-            packet = bytes()
-            buf = globals()['buffer']
-            length = len(buf)
+        try:
+            print('Connecting to '+device)
+            port = serial.Serial(device, 1000000)
 
-            packet += chr(0xaa)
-            packet += chr((length>>8)&0xff)
-            packet += chr(length&0xff)
-            for x in xrange(length):
-                packet += chr(buf[x])
+            while globals()['running']:
+                if 'buffer' in globals():
+                    packet = bytes()
+                    buf = globals()['buffer']
+                    length = len(buf)
 
-            port.write(packet)
+                    packet += chr(0xaa)
+                    packet += chr((length>>8)&0xff)
+                    packet += chr(length&0xff)
+                    for x in xrange(length):
+                        packet += chr(buf[x])
 
-        time.sleep(1.0/50)
+                    port.write(packet)
 
-    port.close()
+                time.sleep(1.0/50)
+
+            port.close()
+        except serial.SerialException:
+            time.sleep(1)
 
 def HandleData(data):
     globals()['buffer'] = data
