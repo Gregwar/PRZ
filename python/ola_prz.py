@@ -22,10 +22,10 @@ def SerialThread(device):
 
                     port.write(packet)
 
-                time.sleep(1.0/50)
+                time.sleep(1.0/30)
 
             port.close()
-        except serial.SerialException:
+        except:
             time.sleep(1)
 
 def HandleData(data):
