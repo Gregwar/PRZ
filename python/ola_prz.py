@@ -63,10 +63,17 @@ def main():
   serialThread = threading.Thread(None, SerialThread, None, (device,))
   serialThread.start()
 
-  wrapper = ClientWrapper()
-  client = wrapper.Client()
-  client.RegisterUniverse(universe, client.REGISTER, HandleData)
-  wrapper.Run()
+  while True:
+      try:
+          print('Running OLA client')
+          wrapper = ClientWrapper()
+          client = wrapper.Client()
+          client.RegisterUniverse(universe, client.REGISTER, HandleData)
+          wrapper.Run()
+      except KeyboardInterrupt:
+          raise
+      except:
+          time.sleep(1)
 
 if __name__ == '__main__':
     try:
