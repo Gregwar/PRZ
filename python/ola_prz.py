@@ -20,16 +20,31 @@ def SerialThread(device):
                     for x in xrange(length):
                         packet += chr(buf[x])
 
+                    #print(ord(packet[3]))
                     port.write(packet)
 
-                time.sleep(1.0/50)
+                time.sleep(1.0/100)
 
             port.close()
         except serial.SerialException:
             time.sleep(1)
 
 def HandleData(data):
-    globals()['buffer'] = data
+    if 'buffer' in globals():
+        lastSize = len(globals()['buffer'])
+    else:
+        lastSize = 0
+    size = 0
+    target = []
+    temp = []
+    for x in data:
+        temp += [x]
+        if x != 0 or size<lastSize:
+            target += temp
+            temp = []
+        size += 1
+
+    globals()['buffer'] = target
 
 def Usage():
     print textwrap.dedent("""
