@@ -6,6 +6,7 @@ port = 6454  # where do you expect to get a msg?
 bufferSize = 1024 # whatever you need
 
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 s.bind(('192.168.0.255', port))
 s.setblocking(0)
 
