@@ -1,5 +1,5 @@
 #!/usr/bin/python
-import serial, getopt, textwrap, sys, threading, time
+import serial, getopt, textwrap, sys, threading, time, math
 from ola.ClientWrapper import ClientWrapper
 
 def SerialThread(device):
@@ -21,6 +21,7 @@ def SerialThread(device):
                         packet += chr(buf[x])
 
                     #print(ord(packet[3]))
+                    print(length)
                     port.write(packet)
 
                 time.sleep(1.0/100)
@@ -38,7 +39,8 @@ def HandleData(data):
     target = []
     temp = []
     for x in data:
-        temp += [x]
+        n = int(255*math.pow(x/255.0, 3.0))
+        temp += [n]
         if x != 0 or size<lastSize:
             target += temp
             temp = []
@@ -62,7 +64,7 @@ def main():
     Usage()
     sys.exit(2)
 
-  universe = 1
+  universe = 0
   device = '/dev/ttyUSB0'
   for o, a in opts:
      if o in ('-h', '--help'):
